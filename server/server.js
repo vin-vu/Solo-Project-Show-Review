@@ -3,8 +3,6 @@ const path = require('path');
 const mongoose = require('mongoose');
 const Review = require('./models/review');
 
-// testing state branch 123
-
 // express app
 const app = express();
 
