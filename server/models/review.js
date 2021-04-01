@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const reviewSchema = new Schema({
-	title: {
+	animeName: {
 		type: String,
 		required: true
 	},
@@ -10,7 +10,9 @@ const reviewSchema = new Schema({
 		type: String,
 		required: true
 	}
-}, { timestamps: true });
+});
+
+// , { timestamps: true }
 
 const Review = mongoose.model('Review', reviewSchema);
 module.exports = Review;
