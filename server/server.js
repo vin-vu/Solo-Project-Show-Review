@@ -1,10 +1,10 @@
 const express = require('express');
-const path = require('path');
+//const path = require('path');
 const mongoose = require('mongoose');
+const bodyParser = require('body-parser');
 const Review = require('./models/review');
+const cors = require('cors')
 
-// express app
-const app = express();
 
 // connect to mongodb
 const dbURI = 'mongodb+srv://vincehvu:Zundoya1!@cluster0.gzx39.mongodb.net/anime-review?retryWrites=true&w=majority';
@@ -12,40 +12,89 @@ mongoose.connect(dbURI, { useNewUrlParser: true, useUnifiedTopology: true })
 	.then((result) => app.listen(3001))
 	.catch((err) => console.log(err))
 
-// add a review
-app.get('/add-review', (req, res, next) => {
-	const review = new Review ({
-		title: 'naruto test3',
-		review: 'I want to be the 8th hokage'
-	});
-	// review.save()
-	// 	.then((result) => {
-	// 		res.send(result)
-	// 	})
-	// 	.catch((err) => {
-	// 		console.log(err);
-	// 	});
-	
-	// save method takes parem err and doc to be inserted into collection
-	review.save((err, doc) => {
-		if (err) return console.log(err);
-		return res.send(doc)
-	})
-});
+// express app
+const app = express();
+app.use(cors());
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
-// retrieve all reviews
-app.get('/all-reviews', (reqs, res) => {
+// get all review
+app.get('/reviews', (req, res) => {
+	console.log('Get request for all reviews')
 	Review.find({}, (err, reviews) => {
-		if (err) return console.log(err);
-		return res.send(reviews)
-	})
+		if (err) return console.log('Error retrieving reviews');
+		res.json(reviews)
+	});
 });
 
+// get 1 review
+app.get('/reviews/:id', (req, res) => {
+	console.log('Get request for single review')
+	Review.findById({ _id: req.params.id }, (err, review) => {
+		if (err) {
+			console.log('Error retrieving a review')
+		}
+		res.json(review)
+	});
+});
+
+// post a review
+app.post('/reviews/insert', (req, res) => {
+	console.log('Post a review');
+	const newReview = new Review();
+	newReview.animeName = req.body.animeName;
+	newReview.review = req.body.review;
+	newReview.save((err, insertedReview) => {
+		if (err) {
+			console.log(err)
+		}
+		res.json(insertedReview)
+	});
+});
+
+// app.post('/api/insert', (req, res) => {
+
+// 	db.query()
+// });
 
 
-app.get('/', (req, res) => {
-	res.redirect('/all-reviews')
-})
+
+
+
+// add a review
+// app.get('/add-review', (req, res, next) => {
+// 	const review = new Review ({
+// 		title: 'naruto test3',
+// 		review: 'I want to be the 8th hokage'
+// 	});
+// 	// review.save()
+// 	// 	.then((result) => {
+// 	// 		res.send(result)
+// 	// 	})
+// 	// 	.catch((err) => {
+// 	// 		console.log(err);
+// 	// 	});
+	
+// 	// save method takes parem err and doc to be inserted into collection
+// 	review.save((err, doc) => {
+// 		if (err) return console.log(err);
+// 		return res.send(doc)
+// 	})
+// });
+
+// // retrieve all reviews
+// app.get('/all-reviews', (reqs, res) => {
+// 	Review.find({}, (err, reviews) => {
+// 		if (err) return console.log(err);
+// 		return res.send(reviews)
+// 	})
+// });
+
+
+
+// app.get('/', (req, res) => {
+// 	res.redirect('/all-reviews')
+// })
 
 // unknown route handler
 app.use((req, res) => res.sendStatus(400));
