@@ -19,16 +19,16 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // get all review
-app.get('/reviews', (req, res) => {
-	console.log('Get request for all reviews')
+app.get('/api/get', (req, res) => {
+	//console.log('Get request for all reviews')
 	Review.find({}, (err, reviews) => {
 		if (err) return console.log('Error retrieving reviews');
-		res.json(reviews)
+		res.send(reviews)
 	});
 });
 
 // get 1 review
-app.get('/reviews/:id', (req, res) => {
+app.get('/api/:id', (req, res) => {
 	console.log('Get request for single review')
 	Review.findById({ _id: req.params.id }, (err, review) => {
 		if (err) {
@@ -39,7 +39,7 @@ app.get('/reviews/:id', (req, res) => {
 });
 
 // post a review
-app.post('/reviews/insert', (req, res) => {
+app.post('/api/insert', (req, res) => {
 	console.log('Post a review');
 	const newReview = new Review();
 	newReview.animeName = req.body.animeName;
