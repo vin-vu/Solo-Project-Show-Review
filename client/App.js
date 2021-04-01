@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 const App = () => {
   const [animeName, setAnimeName] = useState("");
 	const [review, setReview] = useState("");
-	const [animeReviewList, setAnimeList] = useState("");
+	const [animeReviewList, setAnimeList] = useState([]);
 
 	useEffect(() => {
 		fetch('http://localhost:3001/api/get')
@@ -23,16 +23,25 @@ const App = () => {
 			method: 'post',
 			headers: {'Content-Type': 'Application/JSON'},
 			body: JSON.stringify(body)
-		})
-		.then(() => {
-			console.log(body.animeName)
-			alert('successful insert')
-		})
+		});
+		
+		setAnimeList([
+			...animeReviewList,
+			{ animeName: animeName, review: review}
+		]);
 	};
+
+	const deleteReview = () => {
+		fetch('http://localhost:3001/api/delete' + animeName, {
+			method: 'DELETE'
+		})
+		.then(res => res.json())
+		// .then(res => console.log(res))
+	}
 
 	return (
 		<div className="App">
-
+			<h1>Anime Reviews</h1>
 			<div className="form">
 				<label>Anime Name</label>
 				<input 
@@ -52,14 +61,27 @@ const App = () => {
 				/>
 
 				<button onClick={submitReview}>Submit</button>
-{/* 
-				{animeReviewList.map((val) => {
-					return <h1>Anime: {val.animeName} | Anime Review: {val.review} </h1> */}
-				})}
+
+				 {animeReviewList.map((val) => {
+
+					 return (
+					 <div className="card">
+						 <h2>{val.animeName}</h2>
+						 <p>{val.review}</p>
+
+						<div className="modify">
+							<button onClick={deleteReview}>Delete</button>
+							<input type="text" id="updateInput"/>
+							<button>Edit</button>
+
+						</div>
+					</div>
+					 );
+				 })}
 			</div>
 		</div>
 	);
-}
+};
 
 // class App extends Component {
 //   constructor(props) {

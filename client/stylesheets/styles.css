@@ -1,5 +1,10 @@
 * {
-  background: #333;
+  background: rgb(105, 105, 105);
+}
+
+.App {
+  text-align: center;
+  font-family:Verdana, Geneva, Tahoma, sans-serif
 }
 
 .form {
@@ -13,4 +18,23 @@
   height: 35px;
   margin: 10px;
   font-size: 20px;
+}
+
+.card {
+  width: 500px;
+  height: 120;
+  border: 2px solid black;
+  border-radius: 15px;
+  margin: 10px;
+}
+
+.modify {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#updateInput {
+  width: 200px;
+  height: 20px;
 }

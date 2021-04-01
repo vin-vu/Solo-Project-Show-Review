@@ -52,6 +52,19 @@ app.post('/api/insert', (req, res) => {
 	});
 });
 
+// delete 1 review
+app.delete('/api/delete', (req, res) => {
+	const name = req.body.animeName
+	Review.deleteOne({ animeName: name }, (err, review) => {
+		if (err) {
+			console.log('Error deleting a review')
+		}
+		res.json(review)
+	});
+});
+
+
+
 // app.post('/api/insert', (req, res) => {
 
 // 	db.query()
