@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
-// import React, { Component } from 'react' 
+//import './stylesheets/styles.css';
+//import Background from './images/sky.jpg'
 
 const App = () => {
   const [animeName, setAnimeName] = useState("");
@@ -31,16 +32,19 @@ const App = () => {
 		]);
 	};
 
-	const deleteReview = () => {
-		fetch('http://localhost:3001/api/delete' + animeName, {
-			method: 'DELETE'
+	const deleteReview = (id) => {
+		fetch('http://localhost:3001/api/:id' + id, {
+			method: 'delete',
+			headers: {'Content-Type': 'Application/JSON'}
 		})
 		.then(res => res.json())
 		// .then(res => console.log(res))
 	}
 
 	return (
-		<div className="App">
+		<div className="App" style={{
+			backgroundImage: 'url(https://1.bp.blogspot.com/--LrzzHcQ2cY/XHXEgPWHN6I/AAAAAAAAC68/f8sokzVFYg8zZ0DVZuxx-R9_1jcACZAAwCKgBGAs/w3840-h1600-p-k-no-nu/mountain-night-scenery-stars-landscape-anime-4K-84.jpg)'
+		}}>
 			<h1>Anime Reviews</h1>
 			<div className="form">
 				<label>Anime Name</label>

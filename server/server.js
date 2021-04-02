@@ -53,13 +53,15 @@ app.post('/api/insert', (req, res) => {
 });
 
 // delete 1 review
-app.delete('/api/delete', (req, res) => {
-	const name = req.body.animeName
-	Review.deleteOne({ animeName: name }, (err, review) => {
+app.delete('/api/:id', (req, res) => {
+	console.log('Deleting a review');
+	// const name = req.body.animeName
+	// console.log(name)
+	Review.findByIdAndRemove({ _id: req.params.id }, (err, deletedReview) => {
 		if (err) {
 			console.log('Error deleting a review')
 		}
-		res.json(review)
+		res.json(deletedReview)
 	});
 });
 
@@ -110,7 +112,7 @@ app.delete('/api/delete', (req, res) => {
 // })
 
 // unknown route handler
-app.use((req, res) => res.sendStatus(400));
+
 
 // global error handler
 app.use((req, res) => {
